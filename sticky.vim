@@ -10,7 +10,7 @@ nnoremap ma :call StickyAdd()<CR>
 autocmd BufRead * call StickyLoad()
 
 function! StickyLoad()
-    let g:StickyPath = join([g:StickyPathPrefix, substitute(expand('%:p'), '[/\\]', ':', 'g'), g:StickyPathSuffix], '')
+    let g:StickyPath = join([g:StickyPathPrefix, substitute(resolve(expand('%:p')), '[/\\]', ':', 'g'), g:StickyPathSuffix], '')
 
     let value = ''
     if filereadable(g:StickyBasePath . g:StickyPath)
