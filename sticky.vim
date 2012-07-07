@@ -18,10 +18,11 @@ endfunction
 
 function! StickyLoad()
     let g:StickyPath = join([g:StickyPathPrefix, substitute(resolve(expand('%:p')), '[/\\]', ':', 'g'), g:StickyPathSuffix], '')
+    let g:StickyFullPath = g:StickyBasePath . g:StickyPath
 
     let value = ''
-    if filereadable(g:StickyBasePath . g:StickyPath)
-        let value = join(readfile(g:StickyBasePath . g:StickyPath), '')
+    if filereadable(g:StickyFullPath)
+        let value = join(readfile(g:StickyFullPath), '')
     endif
 
     exe 'let g:StickyValue = [' . value . ']'
@@ -47,13 +48,12 @@ function! StickyAdd()
     let s = input("Add Sticky: ")
     echo ""
     if "" != s
-      let fname = g:StickyBasePath . g:StickyPath
       let b = []
-      if filereadable(fname)
-          let b = readfile(fname)
+      if filereadable(g:StickyFullPath)
+          let b = readfile(g:StickyFullPath)
       endif
       call add(b, '{ "body": "' . s . '", "line": ' . line('.') . ' },')
-      call writefile(b, fname)
+      call writefile(b, g:StickyFullPath)
 
       call StickyLoad()
       call StickyOpen()
