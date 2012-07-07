@@ -17,6 +17,8 @@ function! StickyList()
 endfunction
 
 function! StickyLoad()
+    call clearmatches()
+
     let g:StickyPath = join([g:StickyPathPrefix, substitute(resolve(expand('%:p')), '[/\\]', ':', 'g'), g:StickyPathSuffix], '')
     let g:StickyFullPath = g:StickyBasePath . g:StickyPath
 
