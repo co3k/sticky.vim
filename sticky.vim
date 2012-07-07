@@ -6,8 +6,15 @@ highlight sticky_exists cterm=underline
 
 nnoremap mo :call StickyOpen()<CR>
 nnoremap ma :call StickyAdd()<CR>
+nnoremap ml :call StickyList()<CR>
 
 autocmd BufRead * call StickyLoad()
+
+function! StickyList()
+    for _e in g:StickyValue
+        echo _e['line'] . ":\t" . _e['body']
+    endfor
+endfunction
 
 function! StickyLoad()
     let g:StickyPath = join([g:StickyPathPrefix, substitute(resolve(expand('%:p')), '[/\\]', ':', 'g'), g:StickyPathSuffix], '')
