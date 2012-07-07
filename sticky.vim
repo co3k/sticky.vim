@@ -11,8 +11,19 @@ nnoremap ml :call StickyList()<CR>
 autocmd BufRead * call StickyLoad()
 
 function! StickyList()
+    let lines = {}
+
     for _e in g:StickyValue
-        echo _e['line'] . ":\t" . _e['body']
+        let line = _e['line'] . ":\t" . getline(_e['line'])
+        if has_key(lines, _e['line'])
+            let line = lines[_e['line']]
+        endif
+
+        let lines[_e['line']] = line . "\n" . _e['body']
+    endfor
+
+    for key in sort(keys(lines))
+        echo lines[key] . "\n------------------"
     endfor
 endfunction
 
