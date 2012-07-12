@@ -74,7 +74,7 @@ function! StickyAdd()
       if filereadable(g:StickyFullPath)
           let b = readfile(g:StickyFullPath)
       endif
-      call add(b, '{ "body": "' . s . '", "line": ' . line('.') . ' },')
+      call add(b, '{ "body": "' . escape(s, '"') . '", "line": ' . line('.') . ' },')
       call writefile(b, g:StickyFullPath)
 
       call StickyLoad()
