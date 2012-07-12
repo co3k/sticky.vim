@@ -6,9 +6,18 @@ highlight sticky_exists cterm=underline
 
 nnoremap mo :call StickyOpen()<CR>
 nnoremap ma :call StickyAdd()<CR>
+nnoremap mc :call StickyClear()<CR>
 nnoremap ml :call StickyList()<CR>
 
 autocmd BufRead * call StickyLoad()
+
+function! StickyClear()
+    if filereadable(g:StickyFullPath)
+        call writefile([], g:StickyFullPath)
+    endif
+
+    call StickyLoad()
+endfunction
 
 function! StickyList()
     let lines = {}
