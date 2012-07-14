@@ -2,6 +2,8 @@ let g:StickyBasePath = '/tmp/'
 let g:StickyPathPrefix = 'co3k-sticky-'
 let g:StickyPathSuffix = '.txt'
 
+let g:StickyMatches = []
+
 highlight sticky_exists cterm=underline
 
 nnoremap mo :call StickyOpen()<CR>
@@ -36,8 +38,16 @@ function! StickyList()
     endfor
 endfunction
 
+function! ClearStickyMatches()
+    for _m in g:StickyMatches
+        call matchdelete(_m)
+    endfor
+
+    let g:StickyMatches = []
+endfunction
+
 function! StickyLoad()
-    call clearmatches()
+    call ClearStickyMatches()
 
     let g:StickyPath = join([g:StickyPathPrefix, substitute(resolve(expand('%:p')), '[/\\]', ':', 'g'), g:StickyPathSuffix], '')
     let g:StickyFullPath = g:StickyBasePath . g:StickyPath
@@ -54,7 +64,8 @@ function! StickyLoad()
     let _k = 0
     while _k < len(g:StickyValue)
       let _v = g:StickyValue[_k]
-      call matchadd('sticky_exists', '\%'._v['line'].'l')
+      let _m = matchadd('sticky_exists', '\%'._v['line'].'l')
+      call add(g:StickyMatches, _m)
 
       if !has_key(g:StickyIndex, _v['line'])
         let g:StickyIndex[_v['line']] = []
