@@ -21,6 +21,10 @@ function! StickyClear()
     call StickyLoad()
 endfunction
 
+function! CompareLineNumber(i1, i2)
+    return str2nr(a:i1) - str2nr(a:i2)
+endfunction
+
 function! StickyList()
     let lines = {}
 
@@ -33,7 +37,7 @@ function! StickyList()
         let lines[_e['line']] = line . "\n" . _e['body']
     endfor
 
-    for key in sort(keys(lines))
+    for key in sort(keys(lines), "CompareLineNumber")
         echo lines[key] . "\n------------------"
     endfor
 endfunction
